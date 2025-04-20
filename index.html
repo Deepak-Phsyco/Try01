@@ -1,96 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic People Info</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: url('https://source.unsplash.com/1600x900/?space,cosmos') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-        }
-
-        .container {
-            text-align: center;
-            padding: 50px;
-        }
-
-        .icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .icon {
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .icon:hover {
-            transform: scale(1.1);
-        }
-
-        .details {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            display: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ID Card Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-color: #f2f2f2;
+    }
+    .form {
+      margin-bottom: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .id-card {
+      width: 300px;
+      background: white;
+      padding: 20px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+    .id-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .stamp {
+      margin-top: 10px;
+      font-weight: bold;
+      color: green;
+      font-size: 14px;
+    }
+    #downloadBtn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Cosmic People</h1>
-        <div class="icons">
-            <div class="icon" onclick="showDetails('person1')">
-                <img src="https://via.placeholder.com/100" alt="Person 1">
-                <p>Person 1</p>
-            </div>
-            <div class="icon" onclick="showDetails('person2')">
-                <img src="https://via.placeholder.com/100" alt="Person 2">
-                <p>Person 2</p>
-            </div>
-            <div class="icon" onclick="showDetails('person3')">
-                <img src="https://via.placeholder.com/100" alt="Person 3">
-                <p>Person 3</p>
-            </div>
-            <div class="icon" onclick="showDetails('person4')">
-                <img src="https://via.placeholder.com/100" alt="Person 4">
-                <p>Person 4</p>
-            </div>
-        </div>
-        <div id="details" class="details"></div>
-    </div>
-    <script>
-        const people = {
-            person1: {
-                name: "Person 1",
-                details: "Details about Person 1. They are an astronaut and love exploring the cosmos."
-            },
-            person2: {
-                name: "Person 2",
-                details: "Details about Person 2. They are a scientist studying the stars."
-            },
-            person3: {
-                name: "Person 3",
-                details: "Details about Person 3. They are an artist inspired by the universe."
-            },
-            person4: {
-                name: "Person 4",
-                details: "Details about Person 4. They are a writer who creates stories about space."
-            }
-        };
+  <div class="form">
+    <h2>Enter Details</h2>
+    <input type="text" id="name" placeholder="Name" /><br /><br />
+    <input type="text" id="class" placeholder="Class" /><br /><br />
+    <input type="text" id="roll" placeholder="Roll Number" /><br /><br />
+    <input type="file" id="photo" accept="image/*" /><br /><br />
+    <button onclick="generateID()">Generate ID Card</button>
+  </div>  <div id="idCardContainer"></div>
+  <button id="downloadBtn" style="display:none" onclick="downloadCard()">Download ID Card</button>  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>  <script>
+    function generateID() {
+      const name = document.getElementById('name').value;
+      const studentClass = document.getElementById('class').value;
+      const roll = document.getElementById('roll').value;
+      const photo = document.getElementById('photo').files[0];
 
-        function showDetails(personKey) {
-            const detailsDiv = document.getElementById('details');
-            detailsDiv.innerHTML = `<h2>${people[personKey].name}</h2><p>${people[personKey].details}</p>`;
-            detailsDiv.style.display = 'block';
-        }
-    </script>
-</body>
+      if (!name || !studentClass || !roll || !photo) {
+        alert('Please fill all fields and select a photo.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById('idCardContainer').innerHTML = `
+          <div class="id-card" id="idCard">
+            <h3>Student ID Card</h3>
+            <img src="${e.target.result}" alt="Photo" />
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Class:</strong> ${studentClass}</p>
+            <p><strong>Roll No:</strong> ${roll}</p>
+            <div class="stamp">Certified by KVD Coders</div>
+          </div>
+        `;
+        document.getElementById('downloadBtn').style.display = 'block';
+      };
+      reader.readAsDataURL(photo);
+    }
+
+    function downloadCard() {
+      html2canvas(document.getElementById("idCard")).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'id_card.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+  </script></body>
 </html>
