@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic People Info</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?space,cosmos') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .icon {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .icon:hover {
+            transform: scale(1.1);
+        }
+
+        .details {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cosmic People</h1>
+        <div class="icons">
+            <div class="icon" onclick="showDetails('person1')">
+                <img src="https://via.placeholder.com/100" alt="Person 1">
+                <p>Person 1</p>
+            </div>
+            <div class="icon" onclick="showDetails('person2')">
+                <img src="https://via.placeholder.com/100" alt="Person 2">
+                <p>Person 2</p>
+            </div>
+            <div class="icon" onclick="showDetails('person3')">
+                <img src="https://via.placeholder.com/100" alt="Person 3">
+                <p>Person 3</p>
+            </div>
+            <div class="icon" onclick="showDetails('person4')">
+                <img src="https://via.placeholder.com/100" alt="Person 4">
+                <p>Person 4</p>
+            </div>
+        </div>
+        <div id="details" class="details"></div>
+    </div>
+    <script>
+        const people = {
+            person1: {
+                name: "Person 1",
+                details: "Details about Person 1. They are an astronaut and love exploring the cosmos."
+            },
+            person2: {
+                name: "Person 2",
+                details: "Details about Person 2. They are a scientist studying the stars."
+            },
+            person3: {
+                name: "Person 3",
+                details: "Details about Person 3. They are an artist inspired by the universe."
+            },
+            person4: {
+                name: "Person 4",
+                details: "Details about Person 4. They are a writer who creates stories about space."
+            }
+        };
+
+        function showDetails(personKey) {
+            const detailsDiv = document.getElementById('details');
+            detailsDiv.innerHTML = `<h2>${people[personKey].name}</h2><p>${people[personKey].details}</p>`;
+            detailsDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
